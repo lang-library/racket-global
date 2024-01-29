@@ -1,7 +1,6 @@
 #! /usr/bin/env racket
 #lang racket
 
-;;(require ffi/unsafe ffi/unsafe/define)
 (require json)
 (require compatibility/defmacro)
 
@@ -21,8 +20,13 @@
        (ffi-lib ,(list-ref $args 1)))
      (,(string->symbol (string-append "define-" (list-ref $args 0)))
       Call (_fun _string _string -> _string))
-     (define (,(string->symbol (string-append "call-" (list-ref $args 0))) name args)
+     (define (,(string->symbol (string-append (list-ref $args 0) "-call" )) name args)
        (from-json (Call name (to-json args))))
+     (define (,(string->symbol (string-append (list-ref $args 0) "-call-one")) name args)
+       (let ((%result (from-json (Call name (to-json args)))))
+         (if (null? %result)
+             null
+             (list-ref %result 0))))
      )
   )
 
