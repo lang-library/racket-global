@@ -39,5 +39,6 @@
 (provide
  to-json
  from-json
+ json-api-safe-car
  define-json-api
  )
