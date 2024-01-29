@@ -14,7 +14,7 @@
   (cond
     ((list? %x)
      (if (zero? (length %x)) null (car %x)))
-    (#t null)))
+    (#t %x)))
 
 (define-macro (define-json-api . $args)
   ;(print $args)
