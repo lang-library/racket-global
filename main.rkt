@@ -1,8 +1,7 @@
 #! /usr/bin/env racket
 #lang racket
 
-(require ffi/unsafe
-         ffi/unsafe/define)
+;;(require ffi/unsafe ffi/unsafe/define)
 (require json)
 (require compatibility/defmacro)
 
@@ -15,14 +14,16 @@
 (define-macro (define-json-api . $args)
   ;(print $args)
   `(begin
-    (define-ffi-definer
-      ,(string->symbol (string-append "define-" (list-ref $args 0)))
-      (ffi-lib ,(list-ref $args 1)))
-    (,(string->symbol (string-append "define-" (list-ref $args 0)))
-     Call (_fun _string _string -> _string))
-    (define (,(string->symbol (string-append "call-" (list-ref $args 0))) name args)
-      (from-json (Call name (to-json args))))
-    )
+     (require ffi/unsafe
+              ffi/unsafe/define)
+     (define-ffi-definer
+       ,(string->symbol (string-append "define-" (list-ref $args 0)))
+       (ffi-lib ,(list-ref $args 1)))
+     (,(string->symbol (string-append "define-" (list-ref $args 0)))
+      Call (_fun _string _string -> _string))
+     (define (,(string->symbol (string-append "call-" (list-ref $args 0))) name args)
+       (from-json (Call name (to-json args))))
+     )
   )
 
 (provide
