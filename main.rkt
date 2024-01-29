@@ -13,7 +13,7 @@
 (define (json-api-safe-car %x)
   (cond
     ((list? %x)
-     (if (zero? (length %x)) (car %x) #nil))
+     (if (zero? (length %x)) (car %x) null))
     (#t null)))
 
 (define-macro (define-json-api . $args)
